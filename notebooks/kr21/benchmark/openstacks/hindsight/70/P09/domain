@@ -1,0 +1,202 @@
+(define (domain openstacks-sequencedstrips)
+(:requirements :typing)
+(:types object order - object product - object count - object)
+(:predicates
+	(includes ?o - order ?p - product)
+	(waiting ?o - order)
+	(started ?o - order)
+	(shipped ?o - order)
+	(made ?p - product)
+	(machine-available )
+	(machine-configured ?p - product)
+	(stacks-avail ?s - count)
+	(next-count ?s - count ?ns - count)
+)
+
+(:action setup-machine
+	:parameters (?p - product ?avail - count)
+	:precondition (and (machine-available ) (not (made ?p)) (stacks-avail ?avail))
+	:effect (and 
+		(not (machine-available ))
+		(machine-configured ?p)
+	)
+)
+
+(:action make-product-p1
+	:parameters (?avail - count)
+	:precondition (and (machine-configured p1) (includes o2 p1) (started o2) (includes o5 p1) (started o5) (includes o8 p1) (started o8) (stacks-avail ?avail))
+	:effect (and 
+		(not (machine-configured p1))
+		(machine-available )
+		(made p1)
+	)
+)
+
+(:action make-product-p2
+	:parameters (?avail - count)
+	:precondition (and (machine-configured p2) (includes o2 p2) (started o2) (includes o5 p2) (started o5) (includes o8 p2) (started o8) (stacks-avail ?avail))
+	:effect (and 
+		(not (machine-configured p2))
+		(machine-available )
+		(made p2)
+	)
+)
+
+(:action make-product-p3
+	:parameters (?avail - count)
+	:precondition (and (machine-configured p3) (includes o3 p3) (started o3) (includes o6 p3) (started o6) (includes o9 p3) (started o9) (stacks-avail ?avail))
+	:effect (and 
+		(not (machine-configured p3))
+		(machine-available )
+		(made p3)
+	)
+)
+
+(:action make-product-p4
+	:parameters (?avail - count)
+	:precondition (and (machine-configured p4) (includes o3 p4) (started o3) (includes o6 p4) (started o6) (includes o9 p4) (started o9) (stacks-avail ?avail))
+	:effect (and 
+		(not (machine-configured p4))
+		(machine-available )
+		(made p4)
+	)
+)
+
+(:action make-product-p5
+	:parameters (?avail - count)
+	:precondition (and (machine-configured p5) (includes o1 p5) (started o1) (includes o4 p5) (started o4) (includes o7 p5) (started o7) (stacks-avail ?avail))
+	:effect (and 
+		(not (machine-configured p5))
+		(machine-available )
+		(made p5)
+	)
+)
+
+(:action make-product-p6
+	:parameters (?avail - count)
+	:precondition (and (machine-configured p6) (includes o1 p6) (started o1) (includes o4 p6) (started o4) (includes o7 p6) (started o7) (stacks-avail ?avail))
+	:effect (and 
+		(not (machine-configured p6))
+		(machine-available )
+		(made p6)
+	)
+)
+
+(:action start-order
+	:parameters (?o - order ?avail - count ?new-avail - count)
+	:precondition (and (waiting ?o) (stacks-avail ?avail) (next-count ?new-avail ?avail))
+	:effect (and 
+		(not (waiting ?o))
+		(started ?o)
+		(not (stacks-avail ?avail))
+		(stacks-avail ?new-avail)
+	)
+)
+
+(:action ship-order-o1
+	:parameters (?avail - count ?new-avail - count)
+	:precondition (and (started o1) (includes o1 p5) (made p5) (includes o1 p6) (made p6) (stacks-avail ?avail) (next-count ?avail ?new-avail))
+	:effect (and 
+		(not (started o1))
+		(shipped o1)
+		(not (stacks-avail ?avail))
+		(stacks-avail ?new-avail)
+	)
+)
+
+(:action ship-order-o2
+	:parameters (?avail - count ?new-avail - count)
+	:precondition (and (started o2) (includes o2 p1) (made p1) (includes o2 p2) (made p2) (stacks-avail ?avail) (next-count ?avail ?new-avail))
+	:effect (and 
+		(not (started o2))
+		(shipped o2)
+		(not (stacks-avail ?avail))
+		(stacks-avail ?new-avail)
+	)
+)
+
+(:action ship-order-o3
+	:parameters (?avail - count ?new-avail - count)
+	:precondition (and (started o3) (includes o3 p3) (made p3) (includes o3 p4) (made p4) (stacks-avail ?avail) (next-count ?avail ?new-avail))
+	:effect (and 
+		(not (started o3))
+		(shipped o3)
+		(not (stacks-avail ?avail))
+		(stacks-avail ?new-avail)
+	)
+)
+
+(:action ship-order-o4
+	:parameters (?avail - count ?new-avail - count)
+	:precondition (and (started o4) (includes o4 p5) (made p5) (includes o4 p6) (made p6) (stacks-avail ?avail) (next-count ?avail ?new-avail))
+	:effect (and 
+		(not (started o4))
+		(shipped o4)
+		(not (stacks-avail ?avail))
+		(stacks-avail ?new-avail)
+	)
+)
+
+(:action ship-order-o5
+	:parameters (?avail - count ?new-avail - count)
+	:precondition (and (started o5) (includes o5 p1) (made p1) (includes o5 p2) (made p2) (stacks-avail ?avail) (next-count ?avail ?new-avail))
+	:effect (and 
+		(not (started o5))
+		(shipped o5)
+		(not (stacks-avail ?avail))
+		(stacks-avail ?new-avail)
+	)
+)
+
+(:action ship-order-o6
+	:parameters (?avail - count ?new-avail - count)
+	:precondition (and (started o6) (includes o6 p3) (made p3) (includes o6 p4) (made p4) (stacks-avail ?avail) (next-count ?avail ?new-avail))
+	:effect (and 
+		(not (started o6))
+		(shipped o6)
+		(not (stacks-avail ?avail))
+		(stacks-avail ?new-avail)
+	)
+)
+
+(:action ship-order-o7
+	:parameters (?avail - count ?new-avail - count)
+	:precondition (and (started o7) (includes o7 p5) (made p5) (includes o7 p6) (made p6) (stacks-avail ?avail) (next-count ?avail ?new-avail))
+	:effect (and 
+		(not (started o7))
+		(shipped o7)
+		(not (stacks-avail ?avail))
+		(stacks-avail ?new-avail)
+	)
+)
+
+(:action ship-order-o8
+	:parameters (?avail - count ?new-avail - count)
+	:precondition (and (started o8) (includes o8 p1) (made p1) (includes o8 p2) (made p2) (stacks-avail ?avail) (next-count ?avail ?new-avail))
+	:effect (and 
+		(not (started o8))
+		(shipped o8)
+		(not (stacks-avail ?avail))
+		(stacks-avail ?new-avail)
+	)
+)
+
+(:action ship-order-o9
+	:parameters (?avail - count ?new-avail - count)
+	:precondition (and (started o9) (includes o9 p3) (made p3) (includes o9 p4) (made p4) (stacks-avail ?avail) (next-count ?avail ?new-avail))
+	:effect (and 
+		(not (started o9))
+		(shipped o9)
+		(not (stacks-avail ?avail))
+		(stacks-avail ?new-avail)
+	)
+)
+
+(:action open-new-stack
+	:parameters (?open - count ?new-open - count)
+	:precondition (and (stacks-avail ?open) (next-count ?open ?new-open))
+	:effect (and 
+		(not (stacks-avail ?open))
+		(stacks-avail ?new-open)
+	)
+))

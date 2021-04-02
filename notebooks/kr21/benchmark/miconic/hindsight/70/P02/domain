@@ -1,0 +1,46 @@
+(define (domain miconic)
+(:requirements :strips)
+(:types object floor - object person - object lift - object)
+(:predicates
+	(origin ?p - person ?f - floor)
+	(destin ?p - person ?f - floor)
+	(above ?f1 - floor ?f2 - floor)
+	(boarded ?p - person ?l - lift)
+	(served ?p - person)
+	(lift-at ?l - lift ?f - floor)
+)
+
+(:action board
+	:parameters (?o1 - floor ?o2 - person ?l - lift)
+	:precondition (and (lift-at ?l ?o1) (origin ?o2 ?o1))
+	:effect (and 
+		(boarded ?o2 ?l)
+	)
+)
+
+(:action depart
+	:parameters (?o1 - floor ?o2 - person ?l - lift)
+	:precondition (and (lift-at ?l ?o1) (destin ?o2 ?o1) (boarded ?o2 ?l))
+	:effect (and 
+		(not (boarded ?o2 ?l))
+		(served ?o2)
+	)
+)
+
+(:action up
+	:parameters (?o1 - floor ?o2 - floor ?l - lift)
+	:precondition (and (lift-at ?l ?o1) (above ?o1 ?o2))
+	:effect (and 
+		(lift-at ?l ?o2)
+		(not (lift-at ?l ?o1))
+	)
+)
+
+(:action down
+	:parameters (?o1 - floor ?o2 - floor ?l - lift)
+	:precondition (and (lift-at ?l ?o1) (above ?o2 ?o1))
+	:effect (and 
+		(lift-at ?l ?o2)
+		(not (lift-at ?l ?o1))
+	)
+))
